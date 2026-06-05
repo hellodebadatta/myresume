@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome | Debadatta Thakur</title>
+    <style>
+        /* --- GLOBAL SETUP --- */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+            background: 
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E"),
+                #000; 
+            background-attachment: fixed;
+        }
+
+        /* --- FORCE SCROLL LOCK ENGINE --- */
+        body.scroll-lock {
+            max-height: 100vh;
+            overflow: hidden !important;
+        }
+
+        /* --- IMMERSIVE BACKGROUND LAYERS --- */
+        .bg-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            z-index: -1;
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+
+        #profileBg {
+            background-image: url('https://images.unsplash.com/photo-1779464433199-ca57ba28339b?q=80&w=2129&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            opacity: 0;
+        }
+
+        #loginBg {
+            background-image: url('https://images.unsplash.com/photo-1614851099511-773084f6911d?auto=format&fit=crop&w=1920&q=80');
+            opacity: 0;
+        }
+
+        #resumeBg {
+            background: linear-gradient(180deg, #23153c 0%, #3d255c 40%, #564787 70%, #8ba9c4 100%);
+            opacity: 0;
+        }
+
+        #contactBg {
+            background-image: url('https://images.unsplash.com/photo-1592450620607-efefef574bd0?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            opacity: 0;
+        }
+
+        /* --- SMOOTH TRANSITION STATES FOR INTERFACE --- */
+        .page-section {
+            opacity: 0; 
+            transform: scale(0.95); 
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                        transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                        visibility 0.5s;
+            visibility: hidden;
+            position: absolute;
+            z-index: 2;
+        }
+
+        .page-section.visible-active {
+            opacity: 1;
+            transform: scale(1);
+            visibility: visible;
+            position: relative; 
+        }
+
+        .hidden {
+            opacity: 0 !important;
+            transform: scale(0.95) !important;
+            visibility: hidden !important;
+            pointer-events: none;
+            position: absolute !important;
+        }
+
+        /* --- LOGIN CARD STYLING --- */
+        .welcome-card {
+            max-width: 420px;
+            width: 85%;
+            padding: 50px 40px;
+            border-radius: 24px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .welcome-card h1 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-size: 2.8em;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .welcome-tagline {
+            display: block;
+            font-size: 1.05em;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 35px;
+            letter-spacing: 0.3px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+            line-height: 1.5;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 15px 50px 15px 24px; 
+            box-sizing: border-box;
+            border-radius: 30px;          
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.05);
+            font-size: 1em;
+            color: #fff;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.65);
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 22px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            fill: rgba(255, 255, 255, 0.65);
+            pointer-events: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px 28px;
+            box-sizing: border-box;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 30px; 
+            background: rgba(255, 255, 255, 0.04);
+            color: rgba(255, 255, 255, 0.85);
+            font-family: inherit;
+            font-size: 1.05em;
+            font-weight: 500;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.7);
+            transform: translateY(-4px);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.6), 0 0 50px rgba(255, 255, 255, 0.25);
+        }
+
+        button:active {
+            transform: translateY(-1px);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+        }
+
+        .error-message {
+            margin-top: 25px;
+            color: #ffcccc;
+            font-weight: 600;
+            font-size: 0.95em;
+            display: none; 
+            padding: 12px;
+            background: rgba(235, 94, 94, 0.2);
+            border: 1px solid rgba(235, 94, 94, 0.35);
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+        }
+
+        /* --- DESKTOP VIEW VIEWPORT NOTE BUBBLE --- */
+        .desktop-note-bubble {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 35px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 30px;
+            font-size: 0.85em;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.75);
+            letter-spacing: 0.3px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .desktop-note-bubble:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* --- AFTER-LOGIN PROFILE HUB CARD STYLING --- */
+        .container {
+            max-width: 620px;
+            width: 85%;
+            padding: 40px;
+            border-radius: 24px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+        }
+        
+        .container h1 {
+            margin: 0 0 8px 0;
+            font-size: 2.6em;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+            line-height: 1.2;
+        }
+
+        .tagline {
+            display: block;
+            font-size: 1.05em;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 25px;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+            line-height: 1.6;
+        }
+
+        .pipe-separator {
+            display: inline-block;
+            margin: 0 14px;
+            color: rgba(255, 255, 255, 0.45);
+            font-weight: 300;
+            vertical-align: 0.05em;
+        }
+        
+        .divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.25);
+            width: 100%;
+            margin-bottom: 30px;
+            border: none;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        .nav-links li a {
+            display: inline-block;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-size: 1.05em;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-links li a:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.7);
+            transform: translateY(-4px);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.6), 0 0 50px rgba(255, 255, 255, 0.25);
+        }
+
+        .nav-links li a:active {
+            transform: translateY(-1px);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+        }
+
+        /* --- CV/RESUME & CONTACT BOX CONTAINER --- */
+        .cv-container {
+            max-width: 750px;
+            width: 90%;
+            margin: 50px auto;
+            padding: 40px;
+            border-radius: 24px;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            line-height: 1.6;
+            position: relative; 
+        }
+
+        /* --- IMMERSIVE BACKGROUND CONTACT CONTAINER --- */
+        .contact-container {
+            max-width: 460px !important;
+            margin: 0 auto !important;
+            padding: 35px 35px 30px 35px !important;
+        }
+
+        /* --- FIXED BACK BUTTON (RESUME PAGE ONLY) --- */
+        .back-corner-btn {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            min-width: 44px; 
+            min-height: 44px;
+            flex-shrink: 0; 
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 50% !important; 
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 10;
+            padding: 0;
+            margin: 0;
+        }
+
+        .back-corner-btn svg {
+            width: 22px;
+            height: 22px;
+            display: block;
+            fill: none;
+            stroke: #ffffff;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: transform 0.3s ease;
+        }
+
+        .back-corner-btn:hover {
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+            transform: scale(1.05);
+        }
+
+        .back-corner-btn:hover svg {
+            transform: translateX(-3px);
+        }
+
+        .back-corner-btn:active {
+            transform: scale(0.95);
+        }
+
+        .cv-container header {
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            padding-bottom: 25px;
+            margin-bottom: 30px;
+            margin-top: 15px; 
+        }
+
+        .contact-container header {
+            padding-bottom: 15px !important;
+            margin-bottom: 20px !important;
+            margin-top: 0px !important;
+        }
+
+        .cv-container h1 {
+            margin: 0;
+            font-size: 2.8em;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .cv-container h1.interactive-title {
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+        
+        .cv-container h1.interactive-title:hover {
+            opacity: 0.8;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1.2em;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        .contact-info {
+            margin-top: 20px;
+            font-size: 0.95em;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+        }
+
+        .contact-info span {
+            margin: 0 12px;
+        }
+
+        section {
+            margin-bottom: 35px;
+        }
+
+        h2 {
+            font-size: 1.4em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+        }
+
+        .edu-item {
+            margin-bottom: 24px;
+        }
+
+        .edu-header {
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .institution, .role {
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        p {
+            color: rgba(255, 255, 255, 0.85);
+            margin-top: 5px;
+            margin-bottom: 12px;
+        }
+
+        /* --- PILLS (SKILLS & HOBBIES) --- */
+        .info-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        .info-list li {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            color: #fff;
+            backdrop-filter: blur(5px);
+        }
+
+        /* --- LANGUAGES GRID --- */
+        .languages-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .lang-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .lang-name {
+            font-size: 1.15em;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .lang-proficiency {
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.75);
+            margin-top: 2px;
+        }
+
+        /* --- CLICKABLE CERTIFICATE BUBBLE WITH GLOW --- */
+        .cert-link {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 0.85em;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 5px;
+            margin-right: 8px; 
+        }
+
+        .cert-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3), 
+                        0 0 20px rgba(139, 169, 196, 0.2), 
+                        0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* --- FULL WIDTH RESUME BUTTONS --- */
+        .download-resume-btn, .go-back-bubble-btn {
+            display: block;
+            text-align: center;
+            box-sizing: border-box;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 14px;
+            border-radius: 50px;
+            font-size: 1.15em;
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: normal;
+            text-decoration: none;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 45px;
+            cursor: pointer;
+        }
+
+        .go-back-bubble-btn {
+            margin-top: 25px;
+            font-family: inherit;
+        }
+
+        .download-resume-btn:hover, .go-back-bubble-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3), 
+                        0 0 20px rgba(139, 169, 196, 0.2), 
+                        0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* --- COMPACT CONTACT BUBBLES --- */
+        .contact-cards-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 10px;
+        }
+
+        .contact-bubble-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            padding: 14px 24px;
+            border-radius: 40px;
+            text-decoration: none;
+            color: #fff;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-bubble-card:hover {
+            background: rgba(255, 255, 255, 0.14);
+            border-color: rgba(255, 255, 255, 0.45);
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.15), 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .contact-card-icon-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .contact-card-icon-wrapper svg {
+            width: 20px;
+            height: 20px;
+            fill: #ffffff;
+        }
+
+        /* Specifically for Stroke/No-Fill Icons */
+        .contact-card-icon-wrapper svg.stroke-icon {
+            fill: none !important;
+            stroke: #ffffff;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .contact-card-details {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .contact-card-label {
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 2px;
+        }
+
+        .contact-card-value {
+            font-size: 1.1em;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+        }
+
+        /* --- RESPONSIVE MEDIA QUERIES --- */
+        @media (max-width: 480px) {
+            .welcome-card h1 { font-size: 2.2em; }
+            .welcome-tagline { font-size: 0.95em; }
+            .container h1 { font-size: 2.1em; }
+            .tagline { font-size: 0.95em; }
+            .nav-links { flex-direction: column; gap: 12px; }
+            .languages-container { grid-template-columns: 1fr; gap: 15px; }
+            .edu-header { flex-direction: column; gap: 2px; }
+            .edu-header span:last-child { font-size: 0.9em; color: rgba(255,255,255,0.6); }
+            .back-corner-btn { top: 15px; left: 15px; width: 38px; height: 38px; min-width: 38px; min-height: 38px; }
+            .back-corner-btn svg { width: 18px; height: 18px; }
+            .cv-container header { margin-top: 25px; }
+            .contact-bubble-card { padding: 12px 18px; gap: 14px; border-radius: 30px; }
+            .contact-card-icon-wrapper { width: 36px; height: 36px; }
+            .contact-card-icon-wrapper svg { width: 16px; height: 16px; }
+            .contact-card-value { font-size: 0.95em; }
+            .contact-container { padding: 25px 20px 25px 20px !important; width: 85%; }
+            .contact-container header { margin-top: 10px !important; }
+            .desktop-note-bubble { margin-top: 25px; font-size: 0.8em; padding: 8px 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="profileBg" class="bg-layer"></div>
+<div id="loginBg" class="bg-layer"></div>
+<div id="resumeBg" class="bg-layer"></div>
+<div id="contactBg" class="bg-layer"></div>
+
+<div id="loginSection" class="welcome-card page-section">
+    <h1>Welcome</h1>
+    <span class="welcome-tagline">You are now visiting Debadatta Thakur's Profile!</span>
+    
+    <form id="gatewayForm">
+        <div class="input-group">
+            <input type="text" id="userName" placeholder="Enter any Username" required>
+            <svg class="input-icon" viewBox="0 0 24 24">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+        </div>
+        
+        <div class="input-group">
+            <input type="password" id="accessCode" placeholder="Enter Code: 4862" required>
+            <svg class="input-icon" viewBox="0 0 24 24">
+                <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+            </svg>
+        </div>
+        
+        <button type="submit">Login</button>
+        
+        <div id="errorBox" class="error-message">Authorization Error</div>
+    </form>
+
+    <!-- Pin note bubble added to the bottom of the login card -->
+    <div class="desktop-note-bubble">
+        <span>📌</span> Best viewed on any Desktop Browser
+    </div>
+</div>
+
+<div id="profileSection" class="container page-section hidden">
+    <h1>Debadatta Thakur</h1>
+    <span class="tagline">
+        Student 
+        <span class="pipe-separator">|</span> 
+        Electrical and Electronics Engineering 
+        <span class="pipe-separator">|</span> 
+        May 21, 2002
+    </span>
+    <hr class="divider">
+    <ul class="nav-links">
+        <li><a href="#" id="resumeBtn">My Resume</a></li>
+        <li><a href="#" id="contactBtn">Contact Me</a></li>
+    </ul>
+</div>
+
+<div id="resumeSection" class="cv-container page-section hidden">
+    <button type="button" class="back-corner-btn" id="resumeBackBtn" title="Return to Profile Hub">
+        <svg viewBox="0 0 24 24">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+    </button>
+
+    <header>
+        <h1 class="interactive-title" id="cvHeaderTitle" title="Click to return to Profile Hub">Debadatta Thakur</h1>
+        <div class="subtitle">Student | Electrical and Electronics Engineering</div>
+        <div class="contact-info">
+            <span>thakurdebadatta16@gmail.com</span> | 
+            <span>+916291020698</span> | 
+            <span>Kalyani, West Bengal, India</span>
+        </div>
+    </header>
+
+    <section id="summary">
+        <h2>CAREER PROFILE</h2>
+        <p>I am an aspiring Electrical & Electronics Engineer, eager to apply my knowledge and technical skills to innovative projects and ideas. I am committed to continuous learning and focused on contributing engineering solutions to renewable energy technologies and their practical applications.</p>
+    </section>
+
+    <section id="personal-info">
+        <h2>Personal Information</h2>
+        <ul class="info-list">
+            <li>May 21, 2002</li>
+            <li>Male</li>
+            <li>Indian</li>
+        </ul>
+    </section>
+
+    <section id="education">
+        <h2>Education</h2>
+        
+        <div class="edu-item">
+            <div class="edu-header">
+                <span>Class X (ICSE)</span>
+                <span>Apr 2008 - Mar 2018</span>
+            </div>
+            <div class="institution">Don Bosco School, Bandel</div>
+            <p>Secured an overall score of 87.60% in Class 10 under the Indian Certificate of Secondary Education</p>
+            <a href="https://drive.google.com/file/d/1QdycI56FydL406L_eNCDX4sGJkrNOCtd/view?usp=sharing" target="_blank" class="cert-link">View Marksheet</a>
+            <a href="https://drive.google.com/file/d/1wppeoN9vfTpZAFm_iz_wPYiud7yNvzaC/view?usp=sharing" target="_blank" class="cert-link">View Certificate</a>
+        </div>
+
+        <div class="edu-item">
+            <div class="edu-header">
+                <span>Class XII (CBSE)</span>
+                <span>Apr 2018 - Mar 2020</span>
+            </div>
+            <div class="institution">Kalyani Central Model School</div>
+            <p>Secured an overall score of 87.60% in Class 12 under the Central Board of Secondary Education</p>
+            <a href="https://drive.google.com/file/d/1onv2LaMNMrzJ4L6_62Q6CiD7xbSEBWNd/view?usp=sharing" target="_blank" class="cert-link">View Marksheet</a>
+            <a href="https://drive.google.com/file/d/1ZN-wS7BpQHsqujWqAbQUZO_Nw5mQEmDd/view?usp=sharing" target="_blank" class="cert-link">View Certificate</a>
+        </div>
+
+        <div class="edu-item">
+            <div class="edu-header">
+                <span>Bachelor of Technology (B.Tech.)</span>
+                <span>Nov 2020 - May 2024</span>
+            </div>
+            <div class="institution">Birla Institute of Technology, Mesra</div>
+            <p>Graduated with a B.Tech. in Electrical & Electronics Engineering with an overall score of 85.00%</p>
+            <a href="https://drive.google.com/file/d/1S1jSMF_MLFcEIYeigSWuRasdSevvNAsv/view?usp=sharing" target="_blank" class="cert-link">View Semester Marksheets</a>
+            <a href="https://drive.google.com/file/d/1CRgV0usvpfnLEIXbn_1WzUq30JUGc_0T/view?usp=sharing" target="_blank" class="cert-link">View Degree Certificate</a>
+            <a href="https://drive.google.com/file/d/1gYyxa3OY5P7AKs5tn5R1EXZrrtEaM9iD/view?usp=sharing" target="_blank" class="cert-link">View Minor Project</a>
+        </div>
+
+        <div class="edu-item">
+            <div class="edu-header">
+                <span>Master of Technology (M.Tech.)</span>
+                <span>Aug 2024 - May 2026</span>
+            </div>
+            <div class="institution">Birla Institute of Technology, Mesra</div>
+            <p>Graduated with an M.Tech. in Electrical Engineering with an overall score of 86.15%</p>
+            <a href="#" target="_blank" class="cert-link">View Semester Marksheets</a>
+            <a href="#" target="_blank" class="cert-link">View Degree Certificate</a>
+            <a href="https://drive.google.com/file/d/1H3D3pL453xPC1yufHDD6V_cWYnLkuM66/view?usp=sharing" target="_blank" class="cert-link">View Thesis</a>
+        </div>
+    </section>
+
+    <section id="Projects">
+        <h2>PROJECTS</h2>
+        
+        <div class="edu-item">
+            <div class="edu-header">
+                <span>Investigation on the Stability of Grid-Forming Inverters with VSG Control</span>
+                <span>Aug 2025 - May 2026</span>
+            </div>
+            <div class="role">Birla Institute of Technology, Mesra</div>
+        </div>
+
+        <div class="edu-item">
+            <div class="edu-header">
+                <span>Analysis of a Cost-Effective Residential Off-Grid Solar PV System</span>
+                <span>Aug 2023 - Nov 2023</span>
+            </div>
+            <div class="role">Birla Institute of Technology, Mesra</div>
+        </div>
+    </section>
+
+    <section id="internship">
+        <h2>Internships</h2>
+        
+        <div class="edu-item">
+            <div class="edu-header">
+                <span>Larsen & Toubro (L&T)</span>
+                <span>Jan 2024 - May 2024</span>
+            </div>
+            <div class="role">Intern</div>
+            <p>Gained hands-on experience in the selection, sizing, and scheduling of HT and LT cables for electrical systems in steel plant operations and control at Hazira, Gujarat. Acquired insights into industry standards, regulations, and valuable safety compliance procedures.</p>
+            <a href="https://drive.google.com/file/d/1oSoCnaAaX_m40Nq8X_IFrKLhFqSBjvgT/view?usp=sharing" target="_blank" class="cert-link">View Certificate</a>
+        </div>
+
+        <div class="edu-item">
+            <div class="edu-header">
+                <span>West Bengal Power Development Corporation Limited (WBPDCL)</span>
+                <span>Jul 2023 - Aug 2023</span>
+            </div>
+            <div class="role">Trainee</div>
+            <p>Acquired a comprehensive understanding of thermal power generation processes, operations, and safety awareness at the plant. Additionally, gained hands-on experience at the simulator training program at Bakreshwar, West Bengal for a typical 210 MW thermal power generation unit.</p>
+            <a href="https://drive.google.com/file/d/1JrQgmCElgo_S9qfDp-rFVgOMbXD7K1JO/view?usp=sharing" target="_blank" class="cert-link">View Certificate</a>
+        </div>
+    </section>
+
+    <section id="certifications">
+        <h2>Certifications</h2>
+        
+        <div class="edu-item">
+            <div class="edu-header">
+                <span>Design of Electric Motors</span>
+                <span>Oct 2023</span>
+            </div>
+            <p class="institution">Indian Institute of Science, Bangalore</p>
+            <a href="https://drive.google.com/file/d/1ab3NWvhyV2f7-1Cylw1mTPisY9j1Mx6X/view?usp=sharing" target="_blank" class="cert-link">View Certificate</a>
+        </div>
+        
+        <div class="edu-item">
+            <div class="edu-header">
+                <span>Hydro, Wind and Solar Power: Resources, Variability and Forecast</span>
+                <span>Feb 2023</span>
+            </div>
+            <p class="institution">École Polytechnique, France</p>
+            <a href="https://drive.google.com/file/d/18xmR4xbipD1C83VZm_enozrU6XQ0sgeD/view?usp=sharing" target="_blank" class="cert-link">View Certificate</a>
+        </div>
+        
+        <div class="edu-item">
+            <div class="edu-header">
+                <span>Solar Energy Engineering and Technology</span>
+                <span>Oct 2022</span>
+            </div>
+            <p class="institution">Indian Institute of Technology, Guwahati</p>
+            <a href="https://drive.google.com/file/d/1jOwHqMJJU9oMMz0wt7J9hXdJUIfYW1gy/view?usp=sharing" target="_blank" class="cert-link">View Certificate</a>
+        </div>
+
+        <div class="edu-item">
+            <div class="edu-header">
+                <span>Advanced Power Generation Technologies</span>
+                <span>Jul 2022</span>
+            </div>
+            <p class="institution">National Power Training Institute, Badarpur</p>
+            <a href="https://drive.google.com/file/d/1dM-oGbN5BHXneLqKR4puauzkGDhK3Mri/view?usp=sharing" target="_blank" class="cert-link">View Certificate</a>
+        </div>
+
+        <div class="edu-item">
+            <div class="edu-header">
+                <span>Introduction to Solar Cells</span>
+                <span>Aug 2022</span>
+            </div>
+            <p class="institution">Technical University of Denmark</p>
+            <a href="https://drive.google.com/file/d/1EMBQP-8oacjS21JsUiKFaSDwdXFXvDMO/view?usp=sharing" target="_blank" class="cert-link">View Certificate</a>
+        </div>
+
+        <div class="edu-item">
+            <div class="edu-header">
+                <span>Wind Energy</span>
+                <span>Aug 2022</span>
+            </div>
+            <p class="institution">Technical University of Denmark</p>
+            <a href="https://drive.google.com/file/d/1LWmRihsiWaNPc_C2h456VHKOhJo0NG0t/view?usp=sharing" target="_blank" class="cert-link">View Certificate</a>
+        </div>
+
+        <div class="edu-item">
+            <div class="edu-header">
+                <span>Renewable Energy Futures</span>
+                <span>Sep 2022</span>
+            </div>
+            <p class="institution">University of Colorado Boulder, Colorado</p>
+            <a href="https://drive.google.com/file/d/1XkhM5ypeU7Y9UF-N4X2x0khwwKTOcdbH/view?usp=sharing" target="_blank" class="cert-link">View Certificate</a>
+        </div>
+    </section>
+
+    <section id="Seminars">
+        <h2>SEMINARS</h2>
+        
+        <div class="edu-item">
+            <div class="edu-header">
+                <span>Advances in Smart Energy Technologies, Intelligent Control, and Drives</span>
+                <span>May 2026</span>
+            </div>
+            <p class="role">Birla Institute of Technology, Mesra</p>
+            <a href="https://drive.google.com/file/d/1DzJ27tyNb4vg8dpnKB1P4z8daoYQzOL0/view?usp=sharing" target="_blank" class="cert-link">View Certificate</a>
+            <a href="https://drive.google.com/file/d/1fbRYHAXUpRgRjDh6j0Yx1zpr7bKOORVM/view?usp=sharing" target="_blank" class="cert-link">View Appreciation Certificate</a>
+        </div>
+        
+        <div class="edu-item">
+            <div class="edu-header">
+                <span>Emerging Technologies of Industry 4.0: AI, Robotics and IoT</span>
+                <span>Feb 2026</span>
+            </div>
+            <p class="role">Birla Institute of Technology, Mesra</p>
+            <a href="https://drive.google.com/file/d/1S_UW0iSgFzJ-aKKHeIJjyyhpsDnpZX-f/view?usp=sharing" target="_blank" class="cert-link">View Certificate</a>
+        </div>
+    </section>
+
+    <section id="Publications">
+        <h2>PUBLICATIONS</h2>
+        
+        <div class="edu-item">
+            <div class="edu-header">
+                <span>Investigation on the Stability of Grid-Forming Inverters with VSG Control under Variable Inertia and Damping Conditions (IEEE PIICON-2026)</span>
+            </div>
+            <p class="role">Communicated</p>
+            <a href="https://drive.google.com/file/d/1jwhTOs9d5KMyuEg10eBsiAlblyD9sDlN/view?usp=sharing" target="_blank" class="cert-link">View Publication</a>
+        </div>
+    </section>
+
+    <section id="skills">
+        <h2>Skills</h2>
+        <ul class="info-list">
+            <li>MATLAB</li>
+            <li>Simulink</li>
+            <li>PSCAD</li>
+            <li>Microsoft Word</li>
+            <li>Microsoft Powerpoint</li>
+            <li>LaTeX</li>
+        </ul>
+    </section>
+
+    <section id="hobbies">
+        <h2>Hobbies</h2>
+        <ul class="info-list">
+            <li>Music Production using DAW</li>
+            <li>Digital Media Restoration</li>
+        </ul>
+    </section>
+
+    <section id="languages">
+        <h2>Languages</h2>
+        <div class="languages-container">
+            <div class="lang-item">
+                <span class="lang-name">English</span>
+                <span class="lang-proficiency">Full Professional Proficiency</span>
+            </div>
+            <div class="lang-item">
+                <span class="lang-name">Bengali</span>
+                <span class="lang-proficiency">Native</span>
+            </div>
+            <div class="lang-item">
+                <span class="lang-name">Hindi</span>
+                <span class="lang-proficiency">Limited Working Proficiency</span>
+            </div>
+        </div>
+    </section>
+
+    <a href="#" download class="download-resume-btn">Download Resume</a>
+</div>
+
+<!-- --- COMPACT CONTACT NOW SECTION --- -->
+<div id="contactSection" class="cv-container contact-container page-section hidden">
+    <header>
+        <h1 class="interactive-title" id="contactHeaderTitle" title="Click to return to Profile Hub">Debadatta Thakur</h1>
+        <div class="subtitle">ORCID: 0009-0003-9427-7675</div>
+    </header>
+
+    <section id="contact-details" style="margin-bottom: 0;">
+        <div class="contact-cards-grid">
+            
+            <!-- Phone Bubble -->
+            <a href="tel:+916291020698" class="contact-bubble-card">
+                <div class="contact-card-icon-wrapper">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-2.2 2.2c-2.83-1.44-5.15-3.75-6.59-6.59l2.2-2.21c.28-.26.36-.65.25-1A11.36 11.36 0 0 1 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.59c0-.55-.45-1-1-1z"/>
+                    </svg>
+                </div>
+                <div class="contact-card-details">
+                    <span class="contact-card-label">Phone</span>
+                    <span class="contact-card-value">+916291020698</span>
+                </div>
+            </a>
+
+            <!-- Email Bubble -->
+            <a href="mailto:thakurdebadatta16@gmail.com" class="contact-bubble-card">
+                <div class="contact-card-icon-wrapper">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                    </svg>
+                </div>
+                <div class="contact-card-details">
+                    <span class="contact-card-label">Email</span>
+                    <span class="contact-card-value">thakurdebadatta16@gmail.com</span>
+                </div>
+            </a>
+
+            <!-- Social Media Bubble (Gems Paperclip Icon) -->
+            <a href="#" target="_blank" class="contact-bubble-card">
+                <div class="contact-card-icon-wrapper">
+                    <svg class="stroke-icon" viewBox="0 0 24 24">
+                        <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                    </svg>
+                </div>
+                <div class="contact-card-details">
+                    <span class="contact-card-label">Social Media</span>
+                    <span class="contact-card-value">Add Profile Here</span>
+                </div>
+            </a>
+
+            <!-- Webpage Bubble (Meshed Globe Grid Icon) -->
+            <a href="#" target="_blank" class="contact-bubble-card">
+                <div class="contact-card-icon-wrapper">
+                    <svg class="stroke-icon" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                        <path d="M2 12h20"></path>
+                    </svg>
+                </div>
+                <div class="contact-card-details">
+                    <span class="contact-card-label">Webpage</span>
+                    <span class="contact-card-value">Add Link Here</span>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- Large 'Go Back' Action Bubble at the bottom -->
+    <button type="button" class="go-back-bubble-btn" id="contactGoBackBtn">Go Back</button>
+</div>
+
+<script>
+    const loginBg = document.getElementById('loginBg');
+    const profileBg = document.getElementById('profileBg');
+    const resumeBg = document.getElementById('resumeBg');
+    const contactBg = document.getElementById('contactBg');
+
+    const loginSection = document.getElementById('loginSection');
+    const profileSection = document.getElementById('profileSection');
+    const resumeSection = document.getElementById('resumeSection');
+    const contactSection = document.getElementById('contactSection');
+
+    // Cross-fade Page Layout Engine 
+    function switchPageSection(outgoingCard, incomingCard, activeBgAssigner) {
+        activeBgAssigner();
+        outgoingCard.classList.remove('visible-active');
+        outgoingCard.classList.add('hidden');
+
+        setTimeout(() => {
+            incomingCard.classList.remove('hidden');
+            setTimeout(() => {
+                incomingCard.classList.add('visible-active');
+                
+                // Force lock scrolling on Profile, Login, and Contact screens
+                if (incomingCard === profileSection || incomingCard === loginSection || incomingCard === contactSection) {
+                    document.body.classList.add('scroll-lock');
+                } else {
+                    document.body.classList.remove('scroll-lock');
+                }
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 20);
+        }, 150);
+    }
+
+    // Return to hub panel layout safely
+    function returnToHub() {
+        const activeSection = !resumeSection.classList.contains('hidden') ? resumeSection : contactSection;
+        switchPageSection(activeSection, profileSection, () => {
+            loginBg.style.opacity = '0';
+            profileBg.style.opacity = '1';
+            resumeBg.style.opacity = '0';
+            contactBg.style.opacity = '0';
+        });
+    }
+
+    // --- ENTRANCE FADE-IN ON LOAD ---
+    window.addEventListener('DOMContentLoaded', () => {
+        document.body.classList.add('scroll-lock'); 
+        setTimeout(() => {
+            loginBg.style.opacity = '1';
+            loginSection.classList.add('visible-active');
+        }, 50);
+    });
+
+    // --- FORM SUBMIT LOGIC ---
+    document.getElementById('gatewayForm').addEventListener('submit', function(event) {
+        event.preventDefault(); 
+        const codeInput = document.getElementById('accessCode').value;
+        const errorBox = document.getElementById('errorBox');
+        
+        if (codeInput === '4862') {
+            errorBox.style.display = 'none';
+            switchPageSection(loginSection, profileSection, () => {
+                loginBg.style.opacity = '0';
+                profileBg.style.opacity = '1';
+                resumeBg.style.opacity = '0';
+                contactBg.style.opacity = '0';
+            });
+        } else {
+            errorBox.style.display = 'block';
+        }
+    });
+
+    // --- HUB TO CV LINK TRIGGER ---
+    document.getElementById('resumeBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        switchPageSection(profileSection, resumeSection, () => {
+            loginBg.style.opacity = '0';
+            profileBg.style.opacity = '0';
+            resumeBg.style.opacity = '1';
+            contactBg.style.opacity = '0';
+        });
+    });
+
+    // --- HUB TO CONTACT LINK TRIGGER ---
+    document.getElementById('contactBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        switchPageSection(profileSection, contactSection, () => {
+            loginBg.style.opacity = '0';
+            profileBg.style.opacity = '0';
+            resumeBg.style.opacity = '0';
+            contactBg.style.opacity = '1';
+        });
+    });
+
+    // --- NAVIGATION BACK ROUTINES ---
+    document.getElementById('cvHeaderTitle').addEventListener('click', returnToHub);
+    document.getElementById('resumeBackBtn').addEventListener('click', returnToHub);
+    document.getElementById('contactHeaderTitle').addEventListener('click', returnToHub);
+    document.getElementById('contactGoBackBtn').addEventListener('click', returnToHub);
+</script>
+
+</body>
+</html>
